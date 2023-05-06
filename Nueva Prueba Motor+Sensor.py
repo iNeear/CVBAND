@@ -7,21 +7,6 @@ import matplotlib.animation as animation # Importa la biblioteca para animar gr�
 from tkinter import * # Importa la biblioteca para crear interfaces gráficas de usuario
 from threading import Thread # Importa la biblioteca para la creación de hilos de ejecución en paralelo
 
-'''
-# Función para obtener datos del puerto serie
-def getData():
-    time.sleep (1.0) # Espera 1 segundo
-    serialConnection.reset_input_buffer() # Limpia el buffer de entrada del puerto serie
-
-    while (isRun):
-        global isReceiving # Indica si se están recibiendo datos
-        global value # Valor leído del puerto serie
-        value = float (serialConnection.readline().strip()) # Lee una línea del puerto serie y la convierte a un valor numérico
-        isReceiving = True # Marca que se están recibiendo datos
-
-    isReceiving = False
-'''
-
 # Función para obtener datos del puerto serie
 def getData():
     time.sleep(1.0)  # Espera 1 segundo
@@ -50,15 +35,6 @@ def askQuit():
     root.quit() # Cierra la ventana de la GUI
     root.destroy() # Destruye la instancia de la ventana de la GUI
 
-'''
-# Función para graficar los datos en tiempo real
-def plotData(self, Samples, lines):
-    global value # Valor leído del puerto serie
-    data.append(value) # Agrega el valor a la colección de datos
-    lines.set_data(range(Samples), data) # Actualiza los datos en la gráfica
-    rpm.set("RPM: "+str(value)) # Actualiza el valor de la etiqueta de RPM
-'''
-
 # Función para graficar los datos en tiempo real
 def plotData(self, Samples, lines):
     global rpm_value  # Valor de RPM leído del puerto serie
@@ -77,21 +53,6 @@ def actualizar_setpoint():
     setpoint = float(entry.get()) # Obtener el valor ingresado en el Entry widget
     s1.set(setpoint) # Actualizar el valor del control s1 con el setpoint
     motorControl(setpoint) # Actualizar el valor del PWM en el motor
-'''
-def actualizar_label():
-    global isReceiving
-    global value
-
-    if isReceiving:
-        if value == 1:
-            label.config(text="Obstáculo detectado")
-            boton.config(bg="red")
-        else:
-            label.config(text="Despejado")
-            boton.config(bg="green")
-
-    root.after(100, actualizar_label)
-'''
 
 # Función para actualizar el valor del sensor FC51 en la etiqueta de texto
 def actualizar_sensor():
