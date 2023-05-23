@@ -67,11 +67,11 @@ def enviar_datos(pwm=None, servo=None):
     print(data)
 
 def estado_1():
-    enviar_datos(None, 1)
+    enviar_datos(None, 1)     #Envio un estado 1 que representa un angulo de 70°
 def estado_2():
-    enviar_datos(None, 2)
+    enviar_datos(None, 2)     #Envio un estado 2 que representa un angulo de 45°
 def estado_3():
-    enviar_datos(None, 3)
+    enviar_datos(None, 3)     #Envio un estado 3 que representa un angulo de 0°
 
 # Función para controlar el motor pololu
 def motorControl(value):
@@ -89,10 +89,10 @@ def actualizar_setpoint():
 def actualizar_sensor():
     global sensor_value  # Valor del sensor FC51 leído del puerto serie
 
-    if sensor_value == 1:
+    if sensor_value == 1:      # Se detecta un objeto cuando es 1
         label.config(text="Obstáculo detectado", bg="green")
 
-    else:
+    else:                      # No detecta un objeto cuando es 0
         label.config(text="Despejado", bg="gray")
 
     root.after(100, actualizar_sensor)
@@ -114,6 +114,7 @@ def show_frame():
     # Llamar a la función de manera recursiva para mostrar frames continuamente
     root.after(10, show_frame)
 
+#Funcion para preguntas de clasificacion
 def seleccionar_opcion(opcion):
     global opcion_actual
 
@@ -133,7 +134,6 @@ serialPort = 'COM5'  # Puerto serie a utilizar
 baudRate = 9600
 isReceiving = False
 isRun = True
-value = 0.0
 
 # Funciones para enviar las diferentes posiciones al servomotor
 ultimo_pwm = 0
