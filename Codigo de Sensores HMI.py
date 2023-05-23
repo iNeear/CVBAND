@@ -183,7 +183,7 @@ logo = PhotoImage(file="LOGO.png")
 logo = logo.subsample(2, 2)
 
 # Crear un Label y configurarlo para mostrar el logo
-logo_label = Label(root, image=logo)
+logo_label = Label(root, image=logo, bd=2, relief="solid")
 logo_label.place(x=915, y=10)
 
 # Interfaz
@@ -244,7 +244,6 @@ label.place(x=1000, y=550)
 
 salida = Button(text="Detener", bg="red", command=askQuit, font=("Arial", 15))  # Asociar la función askQuit al botón
 salida.place(x=1260, y=650)
-
 
 root.after(100, actualizar_sensor)
 
