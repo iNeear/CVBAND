@@ -178,6 +178,7 @@ ax.set_ylabel("RPM")
 
 lines = ax.plot([], [])[0]
 
+''' Codigo para la GUI '''
 
 #  Ventana Principal
 # Pantalla
