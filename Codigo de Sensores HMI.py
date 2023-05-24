@@ -9,6 +9,8 @@ from threading import Thread # Importa la biblioteca para la creación de hilos 
 import cv2
 from PIL import Image, ImageTk
 
+''' Funciones para recibir y enviar datos '''
+
 # Función para obtener datos del puerto serie
 def getData():
     time.sleep(1.0)  # Espera 1 segundo
@@ -27,28 +29,7 @@ def getData():
 
     isReceiving = False
 
-# Función para solicitar el cierre de la aplicación
-def askQuit():
-    global isRun  # Indica si la aplicación está en ejecución
-    isRun = False  # Marca que la aplicación no está en ejecución
-    thread.join()  # Espera a que el hilo de recepción de datos termine su ejecución
-    serialConnection.write(('0\n').encode())  # Envía un comando de parada al dispositivo conectado por el puerto serie
-    serialConnection.close()  # Cierra la conexión del puerto serie
-    # Detener la captura de la cámara y liberar los recursos
-    camera.release()
-    cv2.destroyAllWindows()
-
-    root.quit()  # Cierra la ventana de la GUI
-    root.destroy()  # Destruye la instancia de la ventana de la GUI
-
-# Función para graficar los datos en tiempo real
-def plotData(self, Samples, lines):
-    global rpm_value  # Valor de RPM leído del puerto serie
-    data.append(rpm_value)  # Agrega el valor a la colección de datos
-    lines.set_data(range(Samples), data)  # Actualiza los datos en la gráfica
-    rpm.set("RPM: " + str(rpm_value))  # Actualiza el valor de la etiqueta de RPM
-
-# Funciones para enviar las diferentes posiciones al servomotor
+# Funcion para enviar las diferentes posiciones al servomotor
 def enviar_datos(pwm=None, servo=None):
     global ultimo_pwm, ultimo_servo
 
@@ -73,6 +54,31 @@ def estado_2():
 def estado_3():
     enviar_datos(None, 3)     #Envio un estado 3 que representa un angulo de 0°
 
+''' Funcion para cerrar la interfaz '''
+
+# Función para solicitar el cierre de la aplicación
+def askQuit():
+    global isRun  # Indica si la aplicación está en ejecución
+    isRun = False  # Marca que la aplicación no está en ejecución
+    thread.join()  # Espera a que el hilo de recepción de datos termine su ejecución
+    serialConnection.write(('0\n').encode())  # Envía un comando de parada al dispositivo conectado por el puerto serie
+    serialConnection.close()  # Cierra la conexión del puerto serie
+    # Detener la captura de la cámara y liberar los recursos
+    camera.release()
+    cv2.destroyAllWindows()
+
+    root.quit()  # Cierra la ventana de la GUI
+    root.destroy()  # Destruye la instancia de la ventana de la GUI
+
+''' Funciones para introducir el PWM y mostrar las RPM en la interfaz'''
+
+# Función para graficar los datos en tiempo real
+def plotData(self, Samples, lines):
+    global rpm_value  # Valor de RPM leído del puerto serie
+    data.append(rpm_value)  # Agrega el valor a la colección de datos
+    lines.set_data(range(Samples), data)  # Actualiza los datos en la gráfica
+    rpm.set("RPM: " + str(rpm_value))  # Actualiza el valor de la etiqueta de RPM
+
 # Función para controlar el motor pololu
 def motorControl(value):
     pwmValue = str(value)  # Convierte el valor de PWM a una cadena de caracteres
@@ -85,17 +91,8 @@ def actualizar_setpoint():
     s1.set(setpoint)  # Actualizar el valor del control s1 con el setpoint
     motorControl(setpoint)  # Actualizar el valor del PWM en el motor
 
-# Función para actualizar el valor del sensor FC51 en la etiqueta de texto
-def actualizar_sensor():
-    global sensor_value  # Valor del sensor FC51 leído del puerto serie
 
-    if sensor_value == 1:      # Se detecta un objeto cuando es 1
-        label.config(text="Obstáculo detectado", bg="green")
-
-    else:                      # No detecta un objeto cuando es 0
-        label.config(text="Despejado", bg="gray")
-
-    root.after(100, actualizar_sensor)
+''' Funcion para mostrar la ventana de la camara en la interfaz'''
 
 # Función para mostrar la imagen de la cámara en el recuadro
 def show_frame():
@@ -114,6 +111,8 @@ def show_frame():
     # Llamar a la función de manera recursiva para mostrar frames continuamente
     root.after(10, show_frame)
 
+''' Funciones para seleccionar una opcion de clasificacion y cuando el sensor detecta algo'''
+
 #Funcion para preguntas de clasificacion
 def seleccionar_opcion(opcion):
     global opcion_actual
@@ -129,6 +128,19 @@ def seleccionar_opcion(opcion):
     if opcion == "tamaño":
         opcion_actual = "tamaño"
         print("Opción seleccionada: Tamaño")
+
+# Función para actualizar el valor del sensor FC51 en la etiqueta de texto
+def actualizar_sensor():
+    global sensor_value  # Valor del sensor FC51 leído del puerto serie
+
+    if sensor_value == 1:      # Se detecta un objeto cuando es 1
+        label.config(text="Obstáculo detectado", bg="green")
+
+    else:                      # No detecta un objeto cuando es 0
+        label.config(text="Despejado", bg="gray")
+
+    root.after(100, actualizar_sensor)
+
 
 serialPort = 'COM5'  # Puerto serie a utilizar
 baudRate = 9600
