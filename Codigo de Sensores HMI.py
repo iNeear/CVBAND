@@ -252,7 +252,7 @@ entry.place(x=13, y=120)
 button = Button(frame, text="Actualizar", command=actualizar_setpoint)
 button.place(x=100, y=117)
 
-label = Label(root, text="Esperando datos del sensor...", bd=2, relief="solid", font=("Arial", 20),width=16)
+label = Label(root, text="Sensor no conectado", bd=2, relief="solid", font=("Arial", 20),width=16)
 label.place(x=1000, y=550)
 
 salida = Button(text="Detener", bg="red", command=askQuit, font=("Arial", 15))  # Asociar la función askQuit al botón
